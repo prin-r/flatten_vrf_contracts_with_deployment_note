@@ -511,8 +511,10 @@ library OracleBDecoder {
 
     struct Params {
         uint16 chainId;
+        uint16 remoteChainId;
         address contractAddress;
         uint256 blockConfirmations;
+        uint256 blockNumber;
     }
 
     struct Result {
@@ -531,8 +533,10 @@ library OracleBDecoder {
     {
         Obi.Data memory decoder = Obi.from(encodedParams);
         params.chainId = decoder.decodeU16();
+        params.remoteChainId = decoder.decodeU16();
         params.contractAddress = decoder.decodeAddress();
-        params.blockConfirmations = decoder.decodeU256();
+        params.blockConfirmations = uint256(decoder.decodeU64());
+        params.blockNumber = uint256(decoder.decodeU64());
         require(decoder.finished(), "DATA_DECODE_NOT_FINISHED");
     }
 
@@ -546,7 +550,7 @@ library OracleBDecoder {
         Obi.Data memory decoder = Obi.from(encodedResult);
         result.remoteChainId = decoder.decodeU16();
         result.blockHash = decoder.decodeBytes();
-        result.confirmations = decoder.decodeU256();
+        result.confirmations = uint256(decoder.decodeU64());
         result.receiptsRoot = decoder.decodeBytes();
 
         require(decoder.finished(), "DATA_DECODE_NOT_FINISHED");
@@ -619,7 +623,7 @@ contract OracleB is Ownable {
         );
 
         /// Result checking
-        require(params.chainId == thisChainId, "FAIL_INCORRECT_CHAIN_ID");
+        require(params.remoteChainId == thisChainId, "FAIL_INCORRECT_REMOTE_CHAIN_ID");
         require(result.confirmations >= minimumConfirmations, "FAIL_TOO_SMALL_CONFIRMATIONS");
 
         /// Call updateBlockHeader
@@ -652,7 +656,7 @@ contract ContractB {
         uint256 confirmations,
         bytes calldata receiptsRoot
     ) external {
-        require(msg.sender == trustedOracle, "FAIL_UNKNOWN_ORACLE");
+        require(msg.sender == trustedOracle && oracle == trustedOracle, "FAIL_UNKNOWN_ORACLE");
 
         latestChain = remoteChainId;
         latestBlockHashlockHash = blockHash;
@@ -682,7 +686,7 @@ contract ContractA {
     }
 }
 
-contract OracleA {
+contract OracleA is OracleInterface {
     event NotifyContractOfBlock(
         uint16 chainId,
         address contractAddress,
@@ -693,7 +697,7 @@ contract OracleA {
         uint16 chainId,
         address contractAddress,
         uint256 blockConfirmations
-    ) external {
+    ) external override {
         emit NotifyContractOfBlock(chainId, contractAddress, blockConfirmations);
     }
 }
