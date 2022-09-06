@@ -7,18 +7,15 @@
 #### Testnet
 
 |Chain \ Contract |Bridge|VRFProvider|VRFComsumer|
-|-----------------|------|-----------|-----------|
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
-|Apple            |3     |3          |3          |
+|-----------------|------------------------------------------|------------------------------------------|------------------------------------------|
+|Rinkeby          |0xB8651240368f64aF317c331296b872b815892E00|0xfdBBAD9D6A4e85a38c12ca387014bd5F697f0661|0xf48F60A97b1BDf0D47fa460a0894634124d039b4|
+|Cronos           |0xB8651240368f64aF317c331296b872b815892E00|0xfdBBAD9D6A4e85a38c12ca387014bd5F697f0661|0xf48F60A97b1BDf0D47fa460a0894634124d039b4|
+|OKC              |0xB8651240368f64aF317c331296b872b815892E00|0xfdBBAD9D6A4e85a38c12ca387014bd5F697f0661|0xf48F60A97b1BDf0D47fa460a0894634124d039b4|
+|Oasis            |0xB8651240368f64aF317c331296b872b815892E00|0xfdBBAD9D6A4e85a38c12ca387014bd5F697f0661|0xf48F60A97b1BDf0D47fa460a0894634124d039b4|
+|BSC              |0xB8651240368f64aF317c331296b872b815892E00|0xfdBBAD9D6A4e85a38c12ca387014bd5F697f0661|0xf48F60A97b1BDf0D47fa460a0894634124d039b4|
+|OP Rinkeby       |0xB8651240368f64aF317c331296b872b815892E00|0xfdBBAD9D6A4e85a38c12ca387014bd5F697f0661|0xf48F60A97b1BDf0D47fa460a0894634124d039b4|
+|Polygon          |0xB8651240368f64aF317c331296b872b815892E00|0xfdBBAD9D6A4e85a38c12ca387014bd5F697f0661|0xf48F60A97b1BDf0D47fa460a0894634124d039b4|
+|Avalanche        |0xB8651240368f64aF317c331296b872b815892E00|0xfdBBAD9D6A4e85a38c12ca387014bd5F697f0661|0xf48F60A97b1BDf0D47fa460a0894634124d039b4|
 
 #### Mainnet
 
