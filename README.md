@@ -1,1 +1,1 @@
-# flatten_bridge_v8
+# Flatten VRF Contracts With Deployment Note
