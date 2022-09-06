@@ -1,8 +1,4 @@
-/**
- *Submitted for verification at Etherscan.io on 2022-09-01
-*/
-
-pragma solidity ^0.8.10;
+pragma solidity ^0.8.15;
 
 interface IBridge {
     enum ResolveStatus {
@@ -47,7 +43,6 @@ interface IBridge {
         external
         returns (uint64, uint64); // block time, requests count
 }
-
 
 /**
  * @dev Contract module that helps prevent reentrant calls to a function.
@@ -107,7 +102,6 @@ abstract contract ReentrancyGuard {
         _status = _NOT_ENTERED;
     }
 }
-
 
 /**
  * @dev Provides information about the current execution context, including the
@@ -205,7 +199,6 @@ abstract contract Ownable is Context {
         emit OwnershipTransferred(oldOwner, newOwner);
     }
 }
-
 
 /**
  * @dev Collection of functions related to the address type
@@ -425,7 +418,6 @@ library Address {
     }
 }
 
-
 /// @title IVRFProvider interface
 /// @notice Interface for the BandVRF provider
 interface IVRFProvider {
@@ -434,7 +426,6 @@ interface IVRFProvider {
     /// @param seed Any string that used to initialize the randomizer.
     function requestRandomData(string calldata seed) external payable;
 }
-
 
 /// @title IVRFConsumer interface
 /// @notice Interface for the VRF consumer base
@@ -615,7 +606,6 @@ library Obi {
         value[64] = data.raw[data.offset + 64];
     }
 }
-
 
 /// @title ParamsDecoder library
 /// @notice Library for decoding the OBI-encoded input parameters of a VRF data request
@@ -901,29 +891,7 @@ abstract contract VRFProviderBase is IVRFProvider, Ownable, ReentrancyGuard {
         // Pay fee to the worker
         msg.sender.call{value: _task.taskFee}("");
     }
-
-    function deleteLatestTask() external {
-        require(taskNonce > 0, "The taskNonce must be > 0");
-        taskNonce -= 1;
-        hasClientSeed[tasks[taskNonce].caller][tasks[taskNonce].clientSeed] = false;
-        delete tasks[taskNonce];
-    }
-
-    function revertLatestTask() external returns(uint256) {
-        require(taskNonce > 0, "The taskNonce must be > 0");
-        uint64 _nonce = taskNonce - 1;
-
-        tasks[_nonce].isResolved = false;
-        tasks[_nonce].result = "";
-        tasks[_nonce].proof = "";
-
-        return tasks[_nonce].taskFee;
-    }
-
-    function payback() external payable {}
-
 }
-
 
 contract VRFProvider is VRFProviderBase {
     constructor(
