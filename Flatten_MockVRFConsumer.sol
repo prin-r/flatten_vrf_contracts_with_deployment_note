@@ -18,28 +18,17 @@ interface IVRFProvider {
     /// Consumers can simply make requests to get random data back later.
     /// @param seed Any string that used to initialize the randomizer.
     function requestRandomData(string calldata seed) external payable;
-    function deleteLatestTask() external;
-    function revertLatestTask() external returns(uint256);
-    function payback() external payable;
 }
 
 abstract contract VRFConsumerBase is IVRFConsumer {
     IVRFProvider public provider;
 
-    function consume(
-        string calldata seed,
-        uint64 time,
-        bytes32 result
-    ) external override {
+    function consume(string calldata seed, uint64 time, bytes32 result) external override {
         require(msg.sender == address(provider), "Caller is not the provider");
         _consume(seed, time, result);
     }
 
-    function _consume(
-        string calldata seed,
-        uint64 time,
-        bytes32 result
-    ) internal virtual {
+    function _consume(string calldata seed, uint64 time, bytes32 result) internal virtual {
         revert("Unimplemented");
     }
 }
@@ -60,35 +49,16 @@ contract MockVRFConsumer is VRFConsumerBase {
         provider = _provider;
     }
 
-    function requestRandomDataFromProvider(string calldata seed)
-        external
-        payable
-    {
+    function requestRandomDataFromProvider(string calldata seed) external payable {
         provider.requestRandomData{value: msg.value}(seed);
-
         emit RandomDataRequested(address(provider), seed, msg.value);
     }
 
-    function _consume(
-        string calldata seed,
-        uint64 time,
-        bytes32 result
-    ) internal override {
+    function _consume(string calldata seed, uint64 time, bytes32 result) internal override {
         latestSeed = seed;
         latestTime = time;
         latestResult = result;
 
         emit Consume(seed, time, result);
-    }
-
-    function deleteLatestTask() external {
-        provider.deleteLatestTask();
-    }
-
-    function revertLatestTask() external {
-        provider.payback{value: provider.revertLatestTask()}();
-        latestSeed = "";
-        latestTime = 0;
-        latestResult = 0;
     }
 }
