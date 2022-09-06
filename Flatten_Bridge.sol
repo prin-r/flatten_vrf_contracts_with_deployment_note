@@ -1,333 +1,6 @@
-// SPDX-License-Identifier: Apache-2.0
+pragma solidity ^0.8.15;
 
-pragma solidity 0.8.4;
-pragma abicoder v2;
-
-abstract contract Context {
-    function _msgSender() internal view virtual returns (address) {
-        return msg.sender;
-    }
-
-    function _msgData() internal view virtual returns (bytes calldata) {
-        return msg.data;
-    }
-}
-
-library SafeMath {
-    /**
-     * @dev Returns the addition of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryAdd(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        unchecked {
-            uint256 c = a + b;
-            if (c < a) return (false, 0);
-            return (true, c);
-        }
-    }
-
-    /**
-     * @dev Returns the substraction of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function trySub(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        unchecked {
-            if (b > a) return (false, 0);
-            return (true, a - b);
-        }
-    }
-
-    /**
-     * @dev Returns the multiplication of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryMul(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        unchecked {
-            // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
-            // benefit is lost if 'b' is also tested.
-            // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
-            if (a == 0) return (true, 0);
-            uint256 c = a * b;
-            if (c / a != b) return (false, 0);
-            return (true, c);
-        }
-    }
-
-    /**
-     * @dev Returns the division of two unsigned integers, with a division by zero flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryDiv(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        unchecked {
-            if (b == 0) return (false, 0);
-            return (true, a / b);
-        }
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers, with a division by zero flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryMod(uint256 a, uint256 b) internal pure returns (bool, uint256) {
-        unchecked {
-            if (b == 0) return (false, 0);
-            return (true, a % b);
-        }
-    }
-
-    /**
-     * @dev Returns the addition of two unsigned integers, reverting on
-     * overflow.
-     *
-     * Counterpart to Solidity's `+` operator.
-     *
-     * Requirements:
-     *
-     * - Addition cannot overflow.
-     */
-    function add(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a + b;
-    }
-
-    /**
-     * @dev Returns the subtraction of two unsigned integers, reverting on
-     * overflow (when the result is negative).
-     *
-     * Counterpart to Solidity's `-` operator.
-     *
-     * Requirements:
-     *
-     * - Subtraction cannot overflow.
-     */
-    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a - b;
-    }
-
-    /**
-     * @dev Returns the multiplication of two unsigned integers, reverting on
-     * overflow.
-     *
-     * Counterpart to Solidity's `*` operator.
-     *
-     * Requirements:
-     *
-     * - Multiplication cannot overflow.
-     */
-    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a * b;
-    }
-
-    /**
-     * @dev Returns the integer division of two unsigned integers, reverting on
-     * division by zero. The result is rounded towards zero.
-     *
-     * Counterpart to Solidity's `/` operator.
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function div(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a / b;
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
-     * reverting when dividing by zero.
-     *
-     * Counterpart to Solidity's `%` operator. This function uses a `revert`
-     * opcode (which leaves remaining gas untouched) while Solidity uses an
-     * invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a % b;
-    }
-
-    /**
-     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on
-     * overflow (when the result is negative).
-     *
-     * CAUTION: This function is deprecated because it requires allocating memory for the error
-     * message unnecessarily. For custom revert reasons use {trySub}.
-     *
-     * Counterpart to Solidity's `-` operator.
-     *
-     * Requirements:
-     *
-     * - Subtraction cannot overflow.
-     */
-    function sub(
-        uint256 a,
-        uint256 b,
-        string memory errorMessage
-    ) internal pure returns (uint256) {
-        unchecked {
-            require(b <= a, errorMessage);
-            return a - b;
-        }
-    }
-
-    /**
-     * @dev Returns the integer division of two unsigned integers, reverting with custom message on
-     * division by zero. The result is rounded towards zero.
-     *
-     * Counterpart to Solidity's `/` operator. Note: this function uses a
-     * `revert` opcode (which leaves remaining gas untouched) while Solidity
-     * uses an invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function div(
-        uint256 a,
-        uint256 b,
-        string memory errorMessage
-    ) internal pure returns (uint256) {
-        unchecked {
-            require(b > 0, errorMessage);
-            return a / b;
-        }
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
-     * reverting with custom message when dividing by zero.
-     *
-     * CAUTION: This function is deprecated because it requires allocating memory for the error
-     * message unnecessarily. For custom revert reasons use {tryMod}.
-     *
-     * Counterpart to Solidity's `%` operator. This function uses a `revert`
-     * opcode (which leaves remaining gas untouched) while Solidity uses an
-     * invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function mod(
-        uint256 a,
-        uint256 b,
-        string memory errorMessage
-    ) internal pure returns (uint256) {
-        unchecked {
-            require(b > 0, errorMessage);
-            return a % b;
-        }
-    }
-}
-
-abstract contract Ownable is Context {
-    address private _owner;
-
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-
-    /**
-     * @dev Initializes the contract setting the deployer as the initial owner.
-     */
-    constructor() {
-        _transferOwnership(_msgSender());
-    }
-
-    /**
-     * @dev Returns the address of the current owner.
-     */
-    function owner() public view virtual returns (address) {
-        return _owner;
-    }
-
-    /**
-     * @dev Throws if called by any account other than the owner.
-     */
-    modifier onlyOwner() {
-        require(owner() == _msgSender(), "Ownable: caller is not the owner");
-        _;
-    }
-
-    /**
-     * @dev Leaves the contract without owner. It will not be possible to call
-     * `onlyOwner` functions anymore. Can only be called by the current owner.
-     *
-     * NOTE: Renouncing ownership will leave the contract without an owner,
-     * thereby removing any functionality that is only available to the owner.
-     */
-    function renounceOwnership() public virtual onlyOwner {
-        _transferOwnership(address(0));
-    }
-
-    /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     * Can only be called by the current owner.
-     */
-    function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
-        _transferOwnership(newOwner);
-    }
-
-    /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     * Internal function without access restriction.
-     */
-    function _transferOwnership(address newOwner) internal virtual {
-        address oldOwner = _owner;
-        _owner = newOwner;
-        emit OwnershipTransferred(oldOwner, newOwner);
-    }
-}
-
-interface IBridge {
-    enum ResolveStatus {
-        RESOLVE_STATUS_OPEN_UNSPECIFIED,
-        RESOLVE_STATUS_SUCCESS,
-        RESOLVE_STATUS_FAILURE,
-        RESOLVE_STATUS_EXPIRED
-    }
-    /// Result struct is similar packet on Bandchain using to re-calculate result hash.
-    struct Result {
-        string clientID;
-        uint64 oracleScriptID;
-        bytes params;
-        uint64 askCount;
-        uint64 minCount;
-        uint64 requestID;
-        uint64 ansCount;
-        uint64 requestTime;
-        uint64 resolveTime;
-        ResolveStatus resolveStatus;
-        bytes result;
-    }
-
-    /// Performs oracle state relay and oracle data verification in one go. The caller submits
-    /// the encoded proof and receives back the decoded data, ready to be validated and used.
-    /// @param data The encoded data for oracle state relay and data verification.
-    function relayAndVerify(bytes calldata data)
-        external
-        returns (Result memory);
-
-    /// Performs oracle state relay and many times of oracle data verification in one go. The caller submits
-    /// the encoded proof and receives back the decoded data, ready to be validated and used.
-    /// @param data The encoded data for oracle state relay and an array of data verification.
-    function relayAndMultiVerify(bytes calldata data)
-        external
-        returns (Result[] memory);
-
-    // Performs oracle state relay and requests count verification in one go. The caller submits
-    /// the encoded proof and receives back the decoded data, ready tobe validated and used.
-    /// @param data The encoded data for oracle state relay and requests count verification.
-    function relayAndVerifyCount(bytes calldata data)
-        external
-        returns (uint64, uint64); // block time, requests count
-}
-
+// Adopted from https://github.com/lazyledger/protobuf3-solidity-lib/blob/master/contracts/ProtobufLib.sol
 library ProtobufLib {
     /// @notice Protobuf wire types.
     enum WireType {
@@ -1189,6 +862,7 @@ library ProtobufLib {
     }
 }
 
+/// @dev Helper utility library for calculating Merkle proof and managing bytes.
 library Utils {
     /// @dev Returns the hash of a Merkle leaf node.
     function merkleLeafHash(bytes memory value)
@@ -1260,6 +934,31 @@ library Utils {
     }
 }
 
+/// @dev Library for computing Tendermint's block header hash from app hash, time, and height.
+///
+/// In Tendermint, a block header hash is the Merkle hash of a binary tree with 14 leaf nodes.
+/// Each node encodes a data piece of the blockchain. The notable data leaves are: [A] app_hash,
+/// [2] height, and [3] - time. All data pieces are combined into one 32-byte hash to be signed
+/// by block validators. The structure of the Merkle tree is shown below.
+///
+///                                   [BlockHeader]
+///                                /                \
+///                   [3A]                                    [3B]
+///                 /      \                                /      \
+///         [2A]                [2B]                [2C]                [2D]
+///        /    \              /    \              /    \              /    \
+///    [1A]      [1B]      [1C]      [1D]      [1E]      [1F]        [C]    [D]
+///    /  \      /  \      /  \      /  \      /  \      /  \
+///  [0]  [1]  [2]  [3]  [4]  [5]  [6]  [7]  [8]  [9]  [A]  [B]
+///
+///  [0] - version               [1] - chain_id            [2] - height        [3] - time
+///  [4] - last_block_id         [5] - last_commit_hash    [6] - data_hash     [7] - validators_hash
+///  [8] - next_validators_hash  [9] - consensus_hash      [A] - app_hash      [B] - last_results_hash
+///  [C] - evidence_hash         [D] - proposer_address
+///
+/// Notice that NOT all leaves of the Merkle tree are needed in order to compute the Merkle
+/// root hash, since we only want to validate the correctness of [A], [2], and [3]. In fact, only
+/// [1A], [2B], [1E], [B], and [2D] are needed in order to compute [BlockHeader].
 library BlockHeaderMerkleParts {
     struct Data {
         bytes32 versionAndChainIdHash; // [1A]
@@ -1317,27 +1016,47 @@ library BlockHeaderMerkleParts {
     }
 }
 
+// MultiStoreProof stores a compact of other Cosmos-SDK modules' storage hash in multistore to
+// compute (in combination with oracle store hash) Tendermint's application state hash at a given block.
+//                                              ________________[AppHash]_________________
+//                                             /                                          \
+//                         _________________[I14]_________________                     __[I15]__
+//                        /                                        \				  /         \
+//             _______[I12]______                          _______[I13]________     [G]         [H]
+//            /                  \                        /                    \
+//       __[I8]__             __[I9]__                __[I10]__              __[I11]__
+//      /         \          /         \            /          \            /         \
+//    [I0]       [I1]     [I2]        [I3]        [I4]        [I5]        [I6]       [I7]
+//   /   \      /   \    /    \      /    \      /    \      /    \      /    \     /    \
+// [0]   [1]  [2]   [3] [4]   [5]  [6]    [7]  [8]    [9]  [A]    [B]  [C]    [D]  [E]   [F]
+// [0] - acc (auth) [1] - authz    [2] - bank     [3] - capability [4] - crisis   [5] - dist
+// [6] - evidence   [7] - feegrant [8] - gov      [9] - ibccore    [A] - icahost  [B] - mint
+// [C] - oracle     [D] - params   [E] - slashing [F] - staking    [G] - transfer [H] - upgrade
+// Notice that NOT all leaves of the Merkle tree are needed in order to compute the Merkle
+// root hash, since we only want to validate the correctness of [B] In fact, only
+// [A], [I4], [I11], [I12], and [G] are needed in order to compute [AppHash].
+
 library MultiStore {
+
     struct Data {
-        bytes32 authToFeeGrantStoresMerkleHash; // [I12]
-        bytes32 govToIbcCoreStoresMerkleHash; // [I4]
-        bytes32 mintStoreMerkleHash; // [A]
-        bytes32 oracleIAVLStateHash; // [B]
-        bytes32 paramsToTransferStoresMerkleHash; // [I11]
-        bytes32 upgradeStoreMerkleHash; // [G]
+        bytes32 oracleIAVLStateHash; // [C]
+        bytes32 paramsStoreMerkleHash; // [D]
+        bytes32 slashingToStakingStoresMerkleHash; // [I7]
+        bytes32 govToMintStoresMerkleHash; // [I10]
+        bytes32 authToFeegrantStoresMerkleHash; // [I12]
+        bytes32 transferToUpgradeStoresMerkleHash; // [I15]
     }
 
     function getAppHash(Data memory self) internal pure returns (bytes32) {
         return
             Utils.merkleInnerHash( // [AppHash]
                 Utils.merkleInnerHash( // [I14]
-                    self.authToFeeGrantStoresMerkleHash, // [I10]
+                    self.authToFeegrantStoresMerkleHash, // [I12]
                     Utils.merkleInnerHash( // [I13]
-                        Utils.merkleInnerHash( // [I10]
-                            self.govToIbcCoreStoresMerkleHash, // [I4]
-                            Utils.merkleInnerHash( // [I5]
-                                self.mintStoreMerkleHash, // [A]
-                                Utils.merkleLeafHash( // [B]
+                        self.govToMintStoresMerkleHash, // [I10]
+                        Utils.merkleInnerHash( // [I11]
+                            Utils.merkleInnerHash( // [I6]
+                                Utils.merkleLeafHash( // [C]
                                     abi.encodePacked(
                                         hex"066f7261636c6520", // oracle prefix (uint8(6) + "oracle" + uint8(32))
                                         sha256(
@@ -1346,17 +1065,1080 @@ library MultiStore {
                                             )
                                         )
                                     )
-                                )
-                            )
-                        ),
-                        self.paramsToTransferStoresMerkleHash // [I11]
+                                ),
+                                self.paramsStoreMerkleHash // [D]
+                            ),
+                            self.slashingToStakingStoresMerkleHash // [I7]
+                        )
                     )
                 ),
-                self.upgradeStoreMerkleHash // [G]
+                self.transferToUpgradeStoresMerkleHash // [I15]
             );
     }
 }
 
+/// @dev Library for performing concatenation of all common parts together into a single common part.
+/// The common part is used for the signature verification process, and it should be the same bytes for all validators.
+/// The library also performs a sanity check to ensure the integrity of the data.
+///
+/// ================================ Original structs on Tendermint ================================
+///
+/// type SignedMsgType int32
+///
+/// type CanonicalPartSetHeader struct {
+///        Total uint32 `protobuf:"varint,1,opt,name=total`
+///        Hash  []byte `protobuf:"bytes,2,opt,name=hash`
+/// }
+///
+/// type CanonicalBlockID struct {
+///        Hash          []byte                 `protobuf:"bytes,1,opt,name=hash`
+///        PartSetHeader CanonicalPartSetHeader `protobuf:"bytes,2,opt,name=part_set_header`
+/// }
+///
+/// type CanonicalVote struct {
+///        Type      SignedMsgType     `protobuf:"varint,1,opt,name=type`
+///        Height    int64             `protobuf:"fixed64,2,opt,name=height`
+///        Round     int64             `protobuf:"fixed64,3,opt,name=round`
+///        BlockID   *CanonicalBlockID `protobuf:"bytes,4,opt,name=block_id`
+///        Timestamp time.Time         `protobuf:"bytes,5,opt,name=timestamp`
+///        ChainID   string            `protobuf:"bytes,6,opt,name=chain_id`
+/// }
+///
+/// ================================ Original structs on Tendermint ================================
+///
+library CommonEncodedVotePart {
+    struct Data {
+        bytes signedDataPrefix;
+        bytes signedDataSuffix;
+    }
+
+    /// @dev Returns the address that signed on the given block hash.
+    /// @param blockHash The block hash that the validator signed data on.
+    function checkPartsAndEncodedCommonParts(Data memory self, bytes32 blockHash)
+        internal
+        pure
+        returns (bytes memory)
+    {
+        // We need to limit the possible size of the prefix and suffix to ensure only one possible block hash.
+
+        // There are only two possible prefix sizes.
+        // 1. If Round == 0, the prefix size should be 15 because the encoded Round was cut off.
+        // 2. If not then the prefix size should be 24 (15 + 9).
+        require(
+            self.signedDataPrefix.length == 15 || self.signedDataPrefix.length == 24,
+            "CommonEncodedVotePart: Invalid prefix's size"
+        );
+
+        // The suffix is encoded of a CanonicalPartSetHeader, which has a fixed size in practical.
+        // There are two reasons why.
+        // 1. The maximum value of CanonicalPartSetHeader.Total is 48 (3145728 / 65536) because Band's MaxBlockSizeBytes
+        // is 3145728 bytes, and the max BlockPartSizeBytes's size is 65536 bytes.
+        // 2. The CanonicalPartSetHeader.Hash's size is fixed (32 bytes) because it is a product of SHA256.
+        // Therefore, the overall size is fixed.
+        require(self.signedDataSuffix.length == 38, "CommonEncodedVotePart: Invalid suffix's size");
+
+        return abi.encodePacked(
+            self.signedDataPrefix,
+            blockHash,
+            self.signedDataSuffix
+        );
+    }
+}
+
+/**
+ * @dev Provides information about the current execution context, including the
+ * sender of the transaction and its data. While these are generally available
+ * via msg.sender and msg.data, they should not be accessed in such a direct
+ * manner, since when dealing with meta-transactions the account sending and
+ * paying for execution may not be the actual sender (as far as an application
+ * is concerned).
+ *
+ * This contract is only required for intermediate, library-like contracts.
+ */
+abstract contract Context {
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view virtual returns (bytes calldata) {
+        return msg.data;
+    }
+}
+
+/**
+ * @dev Contract module which provides a basic access control mechanism, where
+ * there is an account (an owner) that can be granted exclusive access to
+ * specific functions.
+ *
+ * By default, the owner account will be the one that deploys the contract. This
+ * can later be changed with {transferOwnership}.
+ *
+ * This module is used through inheritance. It will make available the modifier
+ * `onlyOwner`, which can be applied to your functions to restrict their use to
+ * the owner.
+ */
+abstract contract Ownable is Context {
+    address private _owner;
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor() {
+        _transferOwnership(_msgSender());
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        _checkOwner();
+        _;
+    }
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view virtual returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Throws if the sender is not the owner.
+     */
+    function _checkOwner() internal view virtual {
+        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+    }
+
+    /**
+     * @dev Leaves the contract without owner. It will not be possible to call
+     * `onlyOwner` functions anymore. Can only be called by the current owner.
+     *
+     * NOTE: Renouncing ownership will leave the contract without an owner,
+     * thereby removing any functionality that is only available to the owner.
+     */
+    function renounceOwnership() public virtual onlyOwner {
+        _transferOwnership(address(0));
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        _transferOwnership(newOwner);
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Internal function without access restriction.
+     */
+    function _transferOwnership(address newOwner) internal virtual {
+        address oldOwner = _owner;
+        _owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
+    }
+}
+
+/**
+ * @dev Library for managing
+ * https://en.wikipedia.org/wiki/Set_(abstract_data_type)[sets] of primitive
+ * types.
+ *
+ * Sets have the following properties:
+ *
+ * - Elements are added, removed, and checked for existence in constant time
+ * (O(1)).
+ * - Elements are enumerated in O(n). No guarantees are made on the ordering.
+ *
+ * ```
+ * contract Example {
+ *     // Add the library methods
+ *     using EnumerableSet for EnumerableSet.AddressSet;
+ *
+ *     // Declare a set state variable
+ *     EnumerableSet.AddressSet private mySet;
+ * }
+ * ```
+ *
+ * As of v3.3.0, sets of type `bytes32` (`Bytes32Set`), `address` (`AddressSet`)
+ * and `uint256` (`UintSet`) are supported.
+ *
+ * [WARNING]
+ * ====
+ *  Trying to delete such a structure from storage will likely result in data corruption, rendering the structure unusable.
+ *  See https://github.com/ethereum/solidity/pull/11843[ethereum/solidity#11843] for more info.
+ *
+ *  In order to clean an EnumerableSet, you can either remove all elements one by one or create a fresh instance using an array of EnumerableSet.
+ * ====
+ */
+library EnumerableSet {
+    // To implement this library for multiple types with as little code
+    // repetition as possible, we write it in terms of a generic Set type with
+    // bytes32 values.
+    // The Set implementation uses private functions, and user-facing
+    // implementations (such as AddressSet) are just wrappers around the
+    // underlying Set.
+    // This means that we can only create new EnumerableSets for types that fit
+    // in bytes32.
+
+    struct Set {
+        // Storage of set values
+        bytes32[] _values;
+        // Position of the value in the `values` array, plus 1 because index 0
+        // means a value is not in the set.
+        mapping(bytes32 => uint256) _indexes;
+    }
+
+    /**
+     * @dev Add a value to a set. O(1).
+     *
+     * Returns true if the value was added to the set, that is if it was not
+     * already present.
+     */
+    function _add(Set storage set, bytes32 value) private returns (bool) {
+        if (!_contains(set, value)) {
+            set._values.push(value);
+            // The value is stored at length-1, but we add 1 to all indexes
+            // and use 0 as a sentinel value
+            set._indexes[value] = set._values.length;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @dev Removes a value from a set. O(1).
+     *
+     * Returns true if the value was removed from the set, that is if it was
+     * present.
+     */
+    function _remove(Set storage set, bytes32 value) private returns (bool) {
+        // We read and store the value's index to prevent multiple reads from the same storage slot
+        uint256 valueIndex = set._indexes[value];
+
+        if (valueIndex != 0) {
+            // Equivalent to contains(set, value)
+            // To delete an element from the _values array in O(1), we swap the element to delete with the last one in
+            // the array, and then remove the last element (sometimes called as 'swap and pop').
+            // This modifies the order of the array, as noted in {at}.
+
+            uint256 toDeleteIndex = valueIndex - 1;
+            uint256 lastIndex = set._values.length - 1;
+
+            if (lastIndex != toDeleteIndex) {
+                bytes32 lastValue = set._values[lastIndex];
+
+                // Move the last value to the index where the value to delete is
+                set._values[toDeleteIndex] = lastValue;
+                // Update the index for the moved value
+                set._indexes[lastValue] = valueIndex; // Replace lastValue's index to valueIndex
+            }
+
+            // Delete the slot where the moved value was stored
+            set._values.pop();
+
+            // Delete the index for the deleted slot
+            delete set._indexes[value];
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @dev Returns true if the value is in the set. O(1).
+     */
+    function _contains(Set storage set, bytes32 value) private view returns (bool) {
+        return set._indexes[value] != 0;
+    }
+
+    /**
+     * @dev Returns the number of values on the set. O(1).
+     */
+    function _length(Set storage set) private view returns (uint256) {
+        return set._values.length;
+    }
+
+    /**
+     * @dev Returns the value stored at position `index` in the set. O(1).
+     *
+     * Note that there are no guarantees on the ordering of values inside the
+     * array, and it may change when more values are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function _at(Set storage set, uint256 index) private view returns (bytes32) {
+        return set._values[index];
+    }
+
+    /**
+     * @dev Return the entire set in an array
+     *
+     * WARNING: This operation will copy the entire storage to memory, which can be quite expensive. This is designed
+     * to mostly be used by view accessors that are queried without any gas fees. Developers should keep in mind that
+     * this function has an unbounded cost, and using it as part of a state-changing function may render the function
+     * uncallable if the set grows to a point where copying to memory consumes too much gas to fit in a block.
+     */
+    function _values(Set storage set) private view returns (bytes32[] memory) {
+        return set._values;
+    }
+
+    // Bytes32Set
+
+    struct Bytes32Set {
+        Set _inner;
+    }
+
+    /**
+     * @dev Add a value to a set. O(1).
+     *
+     * Returns true if the value was added to the set, that is if it was not
+     * already present.
+     */
+    function add(Bytes32Set storage set, bytes32 value) internal returns (bool) {
+        return _add(set._inner, value);
+    }
+
+    /**
+     * @dev Removes a value from a set. O(1).
+     *
+     * Returns true if the value was removed from the set, that is if it was
+     * present.
+     */
+    function remove(Bytes32Set storage set, bytes32 value) internal returns (bool) {
+        return _remove(set._inner, value);
+    }
+
+    /**
+     * @dev Returns true if the value is in the set. O(1).
+     */
+    function contains(Bytes32Set storage set, bytes32 value) internal view returns (bool) {
+        return _contains(set._inner, value);
+    }
+
+    /**
+     * @dev Returns the number of values in the set. O(1).
+     */
+    function length(Bytes32Set storage set) internal view returns (uint256) {
+        return _length(set._inner);
+    }
+
+    /**
+     * @dev Returns the value stored at position `index` in the set. O(1).
+     *
+     * Note that there are no guarantees on the ordering of values inside the
+     * array, and it may change when more values are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function at(Bytes32Set storage set, uint256 index) internal view returns (bytes32) {
+        return _at(set._inner, index);
+    }
+
+    /**
+     * @dev Return the entire set in an array
+     *
+     * WARNING: This operation will copy the entire storage to memory, which can be quite expensive. This is designed
+     * to mostly be used by view accessors that are queried without any gas fees. Developers should keep in mind that
+     * this function has an unbounded cost, and using it as part of a state-changing function may render the function
+     * uncallable if the set grows to a point where copying to memory consumes too much gas to fit in a block.
+     */
+    function values(Bytes32Set storage set) internal view returns (bytes32[] memory) {
+        return _values(set._inner);
+    }
+
+    // AddressSet
+
+    struct AddressSet {
+        Set _inner;
+    }
+
+    /**
+     * @dev Add a value to a set. O(1).
+     *
+     * Returns true if the value was added to the set, that is if it was not
+     * already present.
+     */
+    function add(AddressSet storage set, address value) internal returns (bool) {
+        return _add(set._inner, bytes32(uint256(uint160(value))));
+    }
+
+    /**
+     * @dev Removes a value from a set. O(1).
+     *
+     * Returns true if the value was removed from the set, that is if it was
+     * present.
+     */
+    function remove(AddressSet storage set, address value) internal returns (bool) {
+        return _remove(set._inner, bytes32(uint256(uint160(value))));
+    }
+
+    /**
+     * @dev Returns true if the value is in the set. O(1).
+     */
+    function contains(AddressSet storage set, address value) internal view returns (bool) {
+        return _contains(set._inner, bytes32(uint256(uint160(value))));
+    }
+
+    /**
+     * @dev Returns the number of values in the set. O(1).
+     */
+    function length(AddressSet storage set) internal view returns (uint256) {
+        return _length(set._inner);
+    }
+
+    /**
+     * @dev Returns the value stored at position `index` in the set. O(1).
+     *
+     * Note that there are no guarantees on the ordering of values inside the
+     * array, and it may change when more values are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function at(AddressSet storage set, uint256 index) internal view returns (address) {
+        return address(uint160(uint256(_at(set._inner, index))));
+    }
+
+    /**
+     * @dev Return the entire set in an array
+     *
+     * WARNING: This operation will copy the entire storage to memory, which can be quite expensive. This is designed
+     * to mostly be used by view accessors that are queried without any gas fees. Developers should keep in mind that
+     * this function has an unbounded cost, and using it as part of a state-changing function may render the function
+     * uncallable if the set grows to a point where copying to memory consumes too much gas to fit in a block.
+     */
+    function values(AddressSet storage set) internal view returns (address[] memory) {
+        bytes32[] memory store = _values(set._inner);
+        address[] memory result;
+
+        /// @solidity memory-safe-assembly
+        assembly {
+            result := store
+        }
+
+        return result;
+    }
+
+    // UintSet
+
+    struct UintSet {
+        Set _inner;
+    }
+
+    /**
+     * @dev Add a value to a set. O(1).
+     *
+     * Returns true if the value was added to the set, that is if it was not
+     * already present.
+     */
+    function add(UintSet storage set, uint256 value) internal returns (bool) {
+        return _add(set._inner, bytes32(value));
+    }
+
+    /**
+     * @dev Removes a value from a set. O(1).
+     *
+     * Returns true if the value was removed from the set, that is if it was
+     * present.
+     */
+    function remove(UintSet storage set, uint256 value) internal returns (bool) {
+        return _remove(set._inner, bytes32(value));
+    }
+
+    /**
+     * @dev Returns true if the value is in the set. O(1).
+     */
+    function contains(UintSet storage set, uint256 value) internal view returns (bool) {
+        return _contains(set._inner, bytes32(value));
+    }
+
+    /**
+     * @dev Returns the number of values on the set. O(1).
+     */
+    function length(UintSet storage set) internal view returns (uint256) {
+        return _length(set._inner);
+    }
+
+    /**
+     * @dev Returns the value stored at position `index` in the set. O(1).
+     *
+     * Note that there are no guarantees on the ordering of values inside the
+     * array, and it may change when more values are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function at(UintSet storage set, uint256 index) internal view returns (uint256) {
+        return uint256(_at(set._inner, index));
+    }
+
+    /**
+     * @dev Return the entire set in an array
+     *
+     * WARNING: This operation will copy the entire storage to memory, which can be quite expensive. This is designed
+     * to mostly be used by view accessors that are queried without any gas fees. Developers should keep in mind that
+     * this function has an unbounded cost, and using it as part of a state-changing function may render the function
+     * uncallable if the set grows to a point where copying to memory consumes too much gas to fit in a block.
+     */
+    function values(UintSet storage set) internal view returns (uint256[] memory) {
+        bytes32[] memory store = _values(set._inner);
+        uint256[] memory result;
+
+        /// @solidity memory-safe-assembly
+        assembly {
+            result := store
+        }
+
+        return result;
+    }
+}
+
+/**
+ * @dev Library for managing an enumerable variant of Solidity's
+ * https://solidity.readthedocs.io/en/latest/types.html#mapping-types[`mapping`]
+ * type.
+ *
+ * Maps have the following properties:
+ *
+ * - Entries are added, removed, and checked for existence in constant time
+ * (O(1)).
+ * - Entries are enumerated in O(n). No guarantees are made on the ordering.
+ *
+ * ```
+ * contract Example {
+ *     // Add the library methods
+ *     using EnumerableMap for EnumerableMap.UintToAddressMap;
+ *
+ *     // Declare a set state variable
+ *     EnumerableMap.UintToAddressMap private myMap;
+ * }
+ * ```
+ *
+ * The following map types are supported:
+ *
+ * - `uint256 -> address` (`UintToAddressMap`) since v3.0.0
+ * - `address -> uint256` (`AddressToUintMap`) since v4.6.0
+ * - `bytes32 -> bytes32` (`Bytes32ToBytes32`) since v4.6.0
+ * - `uint256 -> uint256` (`UintToUintMap`) since v4.7.0
+ * - `bytes32 -> uint256` (`Bytes32ToUintMap`) since v4.7.0
+ *
+ * [WARNING]
+ * ====
+ *  Trying to delete such a structure from storage will likely result in data corruption, rendering the structure unusable.
+ *  See https://github.com/ethereum/solidity/pull/11843[ethereum/solidity#11843] for more info.
+ *
+ *  In order to clean an EnumerableMap, you can either remove all elements one by one or create a fresh instance using an array of EnumerableMap.
+ * ====
+ */
+library EnumerableMap {
+    using EnumerableSet for EnumerableSet.Bytes32Set;
+
+    // To implement this library for multiple types with as little code
+    // repetition as possible, we write it in terms of a generic Map type with
+    // bytes32 keys and values.
+    // The Map implementation uses private functions, and user-facing
+    // implementations (such as Uint256ToAddressMap) are just wrappers around
+    // the underlying Map.
+    // This means that we can only create new EnumerableMaps for types that fit
+    // in bytes32.
+
+    struct Bytes32ToBytes32Map {
+        // Storage of keys
+        EnumerableSet.Bytes32Set _keys;
+        mapping(bytes32 => bytes32) _values;
+    }
+
+    /**
+     * @dev Adds a key-value pair to a map, or updates the value for an existing
+     * key. O(1).
+     *
+     * Returns true if the key was added to the map, that is if it was not
+     * already present.
+     */
+    function set(
+        Bytes32ToBytes32Map storage map,
+        bytes32 key,
+        bytes32 value
+    ) internal returns (bool) {
+        map._values[key] = value;
+        return map._keys.add(key);
+    }
+
+    /**
+     * @dev Removes a key-value pair from a map. O(1).
+     *
+     * Returns true if the key was removed from the map, that is if it was present.
+     */
+    function remove(Bytes32ToBytes32Map storage map, bytes32 key) internal returns (bool) {
+        delete map._values[key];
+        return map._keys.remove(key);
+    }
+
+    /**
+     * @dev Returns true if the key is in the map. O(1).
+     */
+    function contains(Bytes32ToBytes32Map storage map, bytes32 key) internal view returns (bool) {
+        return map._keys.contains(key);
+    }
+
+    /**
+     * @dev Returns the number of key-value pairs in the map. O(1).
+     */
+    function length(Bytes32ToBytes32Map storage map) internal view returns (uint256) {
+        return map._keys.length();
+    }
+
+    /**
+     * @dev Returns the key-value pair stored at position `index` in the map. O(1).
+     *
+     * Note that there are no guarantees on the ordering of entries inside the
+     * array, and it may change when more entries are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function at(Bytes32ToBytes32Map storage map, uint256 index) internal view returns (bytes32, bytes32) {
+        bytes32 key = map._keys.at(index);
+        return (key, map._values[key]);
+    }
+
+    /**
+     * @dev Tries to returns the value associated with `key`.  O(1).
+     * Does not revert if `key` is not in the map.
+     */
+    function tryGet(Bytes32ToBytes32Map storage map, bytes32 key) internal view returns (bool, bytes32) {
+        bytes32 value = map._values[key];
+        if (value == bytes32(0)) {
+            return (contains(map, key), bytes32(0));
+        } else {
+            return (true, value);
+        }
+    }
+
+    /**
+     * @dev Returns the value associated with `key`.  O(1).
+     *
+     * Requirements:
+     *
+     * - `key` must be in the map.
+     */
+    function get(Bytes32ToBytes32Map storage map, bytes32 key) internal view returns (bytes32) {
+        bytes32 value = map._values[key];
+        require(value != 0 || contains(map, key), "EnumerableMap: nonexistent key");
+        return value;
+    }
+
+    /**
+     * @dev Same as {_get}, with a custom error message when `key` is not in the map.
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {_tryGet}.
+     */
+    function get(
+        Bytes32ToBytes32Map storage map,
+        bytes32 key,
+        string memory errorMessage
+    ) internal view returns (bytes32) {
+        bytes32 value = map._values[key];
+        require(value != 0 || contains(map, key), errorMessage);
+        return value;
+    }
+
+    // UintToUintMap
+
+    struct UintToUintMap {
+        Bytes32ToBytes32Map _inner;
+    }
+
+    /**
+     * @dev Adds a key-value pair to a map, or updates the value for an existing
+     * key. O(1).
+     *
+     * Returns true if the key was added to the map, that is if it was not
+     * already present.
+     */
+    function set(
+        UintToUintMap storage map,
+        uint256 key,
+        uint256 value
+    ) internal returns (bool) {
+        return set(map._inner, bytes32(key), bytes32(value));
+    }
+
+    /**
+     * @dev Removes a value from a set. O(1).
+     *
+     * Returns true if the key was removed from the map, that is if it was present.
+     */
+    function remove(UintToUintMap storage map, uint256 key) internal returns (bool) {
+        return remove(map._inner, bytes32(key));
+    }
+
+    /**
+     * @dev Returns true if the key is in the map. O(1).
+     */
+    function contains(UintToUintMap storage map, uint256 key) internal view returns (bool) {
+        return contains(map._inner, bytes32(key));
+    }
+
+    /**
+     * @dev Returns the number of elements in the map. O(1).
+     */
+    function length(UintToUintMap storage map) internal view returns (uint256) {
+        return length(map._inner);
+    }
+
+    /**
+     * @dev Returns the element stored at position `index` in the set. O(1).
+     * Note that there are no guarantees on the ordering of values inside the
+     * array, and it may change when more values are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function at(UintToUintMap storage map, uint256 index) internal view returns (uint256, uint256) {
+        (bytes32 key, bytes32 value) = at(map._inner, index);
+        return (uint256(key), uint256(value));
+    }
+
+    /**
+     * @dev Tries to returns the value associated with `key`.  O(1).
+     * Does not revert if `key` is not in the map.
+     */
+    function tryGet(UintToUintMap storage map, uint256 key) internal view returns (bool, uint256) {
+        (bool success, bytes32 value) = tryGet(map._inner, bytes32(key));
+        return (success, uint256(value));
+    }
+
+    /**
+     * @dev Returns the value associated with `key`.  O(1).
+     *
+     * Requirements:
+     *
+     * - `key` must be in the map.
+     */
+    function get(UintToUintMap storage map, uint256 key) internal view returns (uint256) {
+        return uint256(get(map._inner, bytes32(key)));
+    }
+
+    /**
+     * @dev Same as {get}, with a custom error message when `key` is not in the map.
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {tryGet}.
+     */
+    function get(
+        UintToUintMap storage map,
+        uint256 key,
+        string memory errorMessage
+    ) internal view returns (uint256) {
+        return uint256(get(map._inner, bytes32(key), errorMessage));
+    }
+
+    // UintToAddressMap
+
+    struct UintToAddressMap {
+        Bytes32ToBytes32Map _inner;
+    }
+
+    /**
+     * @dev Adds a key-value pair to a map, or updates the value for an existing
+     * key. O(1).
+     *
+     * Returns true if the key was added to the map, that is if it was not
+     * already present.
+     */
+    function set(
+        UintToAddressMap storage map,
+        uint256 key,
+        address value
+    ) internal returns (bool) {
+        return set(map._inner, bytes32(key), bytes32(uint256(uint160(value))));
+    }
+
+    /**
+     * @dev Removes a value from a set. O(1).
+     *
+     * Returns true if the key was removed from the map, that is if it was present.
+     */
+    function remove(UintToAddressMap storage map, uint256 key) internal returns (bool) {
+        return remove(map._inner, bytes32(key));
+    }
+
+    /**
+     * @dev Returns true if the key is in the map. O(1).
+     */
+    function contains(UintToAddressMap storage map, uint256 key) internal view returns (bool) {
+        return contains(map._inner, bytes32(key));
+    }
+
+    /**
+     * @dev Returns the number of elements in the map. O(1).
+     */
+    function length(UintToAddressMap storage map) internal view returns (uint256) {
+        return length(map._inner);
+    }
+
+    /**
+     * @dev Returns the element stored at position `index` in the set. O(1).
+     * Note that there are no guarantees on the ordering of values inside the
+     * array, and it may change when more values are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function at(UintToAddressMap storage map, uint256 index) internal view returns (uint256, address) {
+        (bytes32 key, bytes32 value) = at(map._inner, index);
+        return (uint256(key), address(uint160(uint256(value))));
+    }
+
+    /**
+     * @dev Tries to returns the value associated with `key`.  O(1).
+     * Does not revert if `key` is not in the map.
+     *
+     * _Available since v3.4._
+     */
+    function tryGet(UintToAddressMap storage map, uint256 key) internal view returns (bool, address) {
+        (bool success, bytes32 value) = tryGet(map._inner, bytes32(key));
+        return (success, address(uint160(uint256(value))));
+    }
+
+    /**
+     * @dev Returns the value associated with `key`.  O(1).
+     *
+     * Requirements:
+     *
+     * - `key` must be in the map.
+     */
+    function get(UintToAddressMap storage map, uint256 key) internal view returns (address) {
+        return address(uint160(uint256(get(map._inner, bytes32(key)))));
+    }
+
+    /**
+     * @dev Same as {get}, with a custom error message when `key` is not in the map.
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {tryGet}.
+     */
+    function get(
+        UintToAddressMap storage map,
+        uint256 key,
+        string memory errorMessage
+    ) internal view returns (address) {
+        return address(uint160(uint256(get(map._inner, bytes32(key), errorMessage))));
+    }
+
+    // AddressToUintMap
+
+    struct AddressToUintMap {
+        Bytes32ToBytes32Map _inner;
+    }
+
+    /**
+     * @dev Adds a key-value pair to a map, or updates the value for an existing
+     * key. O(1).
+     *
+     * Returns true if the key was added to the map, that is if it was not
+     * already present.
+     */
+    function set(
+        AddressToUintMap storage map,
+        address key,
+        uint256 value
+    ) internal returns (bool) {
+        return set(map._inner, bytes32(uint256(uint160(key))), bytes32(value));
+    }
+
+    /**
+     * @dev Removes a value from a set. O(1).
+     *
+     * Returns true if the key was removed from the map, that is if it was present.
+     */
+    function remove(AddressToUintMap storage map, address key) internal returns (bool) {
+        return remove(map._inner, bytes32(uint256(uint160(key))));
+    }
+
+    /**
+     * @dev Returns true if the key is in the map. O(1).
+     */
+    function contains(AddressToUintMap storage map, address key) internal view returns (bool) {
+        return contains(map._inner, bytes32(uint256(uint160(key))));
+    }
+
+    /**
+     * @dev Returns the number of elements in the map. O(1).
+     */
+    function length(AddressToUintMap storage map) internal view returns (uint256) {
+        return length(map._inner);
+    }
+
+    /**
+     * @dev Returns the element stored at position `index` in the set. O(1).
+     * Note that there are no guarantees on the ordering of values inside the
+     * array, and it may change when more values are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function at(AddressToUintMap storage map, uint256 index) internal view returns (address, uint256) {
+        (bytes32 key, bytes32 value) = at(map._inner, index);
+        return (address(uint160(uint256(key))), uint256(value));
+    }
+
+    /**
+     * @dev Tries to returns the value associated with `key`.  O(1).
+     * Does not revert if `key` is not in the map.
+     */
+    function tryGet(AddressToUintMap storage map, address key) internal view returns (bool, uint256) {
+        (bool success, bytes32 value) = tryGet(map._inner, bytes32(uint256(uint160(key))));
+        return (success, uint256(value));
+    }
+
+    /**
+     * @dev Returns the value associated with `key`.  O(1).
+     *
+     * Requirements:
+     *
+     * - `key` must be in the map.
+     */
+    function get(AddressToUintMap storage map, address key) internal view returns (uint256) {
+        return uint256(get(map._inner, bytes32(uint256(uint160(key)))));
+    }
+
+    /**
+     * @dev Same as {get}, with a custom error message when `key` is not in the map.
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {tryGet}.
+     */
+    function get(
+        AddressToUintMap storage map,
+        address key,
+        string memory errorMessage
+    ) internal view returns (uint256) {
+        return uint256(get(map._inner, bytes32(uint256(uint160(key))), errorMessage));
+    }
+
+    // Bytes32ToUintMap
+
+    struct Bytes32ToUintMap {
+        Bytes32ToBytes32Map _inner;
+    }
+
+    /**
+     * @dev Adds a key-value pair to a map, or updates the value for an existing
+     * key. O(1).
+     *
+     * Returns true if the key was added to the map, that is if it was not
+     * already present.
+     */
+    function set(
+        Bytes32ToUintMap storage map,
+        bytes32 key,
+        uint256 value
+    ) internal returns (bool) {
+        return set(map._inner, key, bytes32(value));
+    }
+
+    /**
+     * @dev Removes a value from a set. O(1).
+     *
+     * Returns true if the key was removed from the map, that is if it was present.
+     */
+    function remove(Bytes32ToUintMap storage map, bytes32 key) internal returns (bool) {
+        return remove(map._inner, key);
+    }
+
+    /**
+     * @dev Returns true if the key is in the map. O(1).
+     */
+    function contains(Bytes32ToUintMap storage map, bytes32 key) internal view returns (bool) {
+        return contains(map._inner, key);
+    }
+
+    /**
+     * @dev Returns the number of elements in the map. O(1).
+     */
+    function length(Bytes32ToUintMap storage map) internal view returns (uint256) {
+        return length(map._inner);
+    }
+
+    /**
+     * @dev Returns the element stored at position `index` in the set. O(1).
+     * Note that there are no guarantees on the ordering of values inside the
+     * array, and it may change when more values are added or removed.
+     *
+     * Requirements:
+     *
+     * - `index` must be strictly less than {length}.
+     */
+    function at(Bytes32ToUintMap storage map, uint256 index) internal view returns (bytes32, uint256) {
+        (bytes32 key, bytes32 value) = at(map._inner, index);
+        return (key, uint256(value));
+    }
+
+    /**
+     * @dev Tries to returns the value associated with `key`.  O(1).
+     * Does not revert if `key` is not in the map.
+     */
+    function tryGet(Bytes32ToUintMap storage map, bytes32 key) internal view returns (bool, uint256) {
+        (bool success, bytes32 value) = tryGet(map._inner, key);
+        return (success, uint256(value));
+    }
+
+    /**
+     * @dev Returns the value associated with `key`.  O(1).
+     *
+     * Requirements:
+     *
+     * - `key` must be in the map.
+     */
+    function get(Bytes32ToUintMap storage map, bytes32 key) internal view returns (uint256) {
+        return uint256(get(map._inner, key));
+    }
+
+    /**
+     * @dev Same as {get}, with a custom error message when `key` is not in the map.
+     *
+     * CAUTION: This function is deprecated because it requires allocating memory for the error
+     * message unnecessarily. For custom revert reasons use {tryGet}.
+     */
+    function get(
+        Bytes32ToUintMap storage map,
+        bytes32 key,
+        string memory errorMessage
+    ) internal view returns (uint256) {
+        return uint256(get(map._inner, key, errorMessage));
+    }
+}
+
+/// @dev Library for computing iAVL Merkle root from (1) data leaf and (2) a list of "MerklePath"
+/// from such leaf to the root of the tree. Each Merkle path (i.e. proof component) consists of:
+///
+/// - isDataOnRight: whether the data is on the right subtree of this internal node.
+/// - subtreeHeight: well, it is the height of this subtree.
+/// - subtreeVersion: the latest block height that this subtree has been updated.
+/// - siblingHash: 32-byte hash of the other child subtree
+///
+/// To construct a hash of an internal Merkle node, the hashes of the two subtrees are combined
+/// with extra data of this internal node. See implementation below. Repeatedly doing this from
+/// the leaf node until you get to the root node to get the final iAVL Merkle hash.
 library IAVLMerklePath {
     struct Data {
         bool isDataOnRight;
@@ -1373,10 +2155,8 @@ library IAVLMerklePath {
         pure
         returns (bytes32)
     {
-        bytes32 leftSubtree =
-            self.isDataOnRight ? self.siblingHash : dataSubtreeHash;
-        bytes32 rightSubtree =
-            self.isDataOnRight ? dataSubtreeHash : self.siblingHash;
+        (bytes32 leftSubtree, bytes32 rightSubtree) =
+            self.isDataOnRight ? (self.siblingHash, dataSubtreeHash) : (dataSubtreeHash, self.siblingHash);
         return
             sha256(
                 abi.encodePacked(
@@ -1392,36 +2172,96 @@ library IAVLMerklePath {
     }
 }
 
+/// @dev Library for performing signer recovery for ECDSA secp256k1 signature. Note that the
+/// library is written specifically for signature signed on Tendermint's precommit data, which
+/// includes the block hash and some additional information prepended and appended to the block
+/// hash. The prepended part (prefix) and the appended part (suffix) are different for each signer
+/// (including signature size, machine clock, validator index, etc).
+///
 library TMSignature {
     struct Data {
         bytes32 r;
         bytes32 s;
         uint8 v;
-        bytes signedDataPrefix;
-        bytes signedDataSuffix;
+        bytes encodedTimestamp;
     }
 
-    /// @dev Returns the address that signed on the given block hash.
-    /// @param blockHash The block hash that the validator signed data on.
-    function recoverSigner(Data memory self, bytes32 blockHash)
+    /// @dev Returns the address that signed on the given encoded canonical vote message on Cosmos.
+    /// @param commonEncodedPart The first common part of the encoded canonical vote.
+    /// @param encodedChainID The last part of the encoded canonical vote.
+    function checkTimeAndRecoverSigner(Data memory self, bytes memory commonEncodedPart, bytes memory encodedChainID)
         internal
         pure
         returns (address)
     {
+        // We need to limit the possible size of the encodedCanonicalVote to ensure only one possible block hash.
+        // The size of the encodedTimestamp will be between 6 and 12 according to the following two constraints.
+        // 1. The size of an encoded Unix's second is 6 bytes until over a thousand years in the future.
+        // 2. The NanoSecond size can vary from 0 to 6 bytes.
+        // Therefore, 6 + 0 <= the size <= 6 + 6.
+        require(
+            6 <= self.encodedTimestamp.length && self.encodedTimestamp.length <= 12,
+            "TMSignature: Invalid timestamp's size"
+        );
+        bytes memory encodedCanonicalVote = abi.encodePacked(
+            commonEncodedPart,
+            uint8(42),
+            uint8(self.encodedTimestamp.length),
+            self.encodedTimestamp,
+            encodedChainID
+        );
         return
             ecrecover(
-                sha256(
-                    abi.encodePacked(
-                        self.signedDataPrefix,
-                        blockHash,
-                        self.signedDataSuffix
-                    )
-                ),
+                sha256(abi.encodePacked(uint8(encodedCanonicalVote.length), encodedCanonicalVote)),
                 self.v,
                 self.r,
                 self.s
             );
     }
+}
+
+interface IBridge {
+    enum ResolveStatus {
+        RESOLVE_STATUS_OPEN_UNSPECIFIED,
+        RESOLVE_STATUS_SUCCESS,
+        RESOLVE_STATUS_FAILURE,
+        RESOLVE_STATUS_EXPIRED
+    }
+    /// Result struct is similar packet on Bandchain using to re-calculate result hash.
+    struct Result {
+        string clientID;
+        uint64 oracleScriptID;
+        bytes params;
+        uint64 askCount;
+        uint64 minCount;
+        uint64 requestID;
+        uint64 ansCount;
+        uint64 requestTime;
+        uint64 resolveTime;
+        ResolveStatus resolveStatus;
+        bytes result;
+    }
+
+    /// Performs oracle state relay and oracle data verification in one go. The caller submits
+    /// the encoded proof and receives back the decoded data, ready to be validated and used.
+    /// @param data The encoded data for oracle state relay and data verification.
+    function relayAndVerify(bytes calldata data)
+        external
+        returns (Result memory);
+
+    /// Performs oracle state relay and many times of oracle data verification in one go. The caller submits
+    /// the encoded proof and receives back the decoded data, ready to be validated and used.
+    /// @param data The encoded data for oracle state relay and an array of data verification.
+    function relayAndMultiVerify(bytes calldata data)
+        external
+        returns (Result[] memory);
+
+    // Performs oracle state relay and requests count verification in one go. The caller submits
+    /// the encoded proof and receives back the decoded data, ready tobe validated and used.
+    /// @param data The encoded data for oracle state relay and requests count verification.
+    function relayAndVerifyCount(bytes calldata data)
+        external
+        returns (uint64, uint64); // block time, requests count
 }
 
 library ResultCodec {
@@ -1559,7 +2399,9 @@ contract Bridge is IBridge, Ownable {
     using BlockHeaderMerkleParts for BlockHeaderMerkleParts.Data;
     using MultiStore for MultiStore.Data;
     using IAVLMerklePath for IAVLMerklePath.Data;
+    using CommonEncodedVotePart for CommonEncodedVotePart.Data;
     using TMSignature for TMSignature.Data;
+    using EnumerableMap for EnumerableMap.AddressToUintMap;
 
     struct ValidatorWithPower {
         address addr;
@@ -1575,36 +2417,90 @@ contract Bridge is IBridge, Ownable {
     /// Mapping from block height to the struct that contains block time and hash of "oracle" iAVL Merkle tree.
     mapping(uint256 => BlockDetail) public blockDetails;
     /// Mapping from an address to its voting power.
-    mapping(address => uint256) public validatorPowers;
+    EnumerableMap.AddressToUintMap private validatorPowers;
     /// The total voting power of active validators currently on duty.
     uint256 public totalValidatorPower;
+    /// The encoded chain's ID of Band.
+    bytes public encodedChainID;
 
     /// Initializes an oracle bridge to BandChain.
     /// @param validators The initial set of BandChain active validators.
-    constructor(ValidatorWithPower[] memory validators) {
+    constructor(ValidatorWithPower[] memory validators, bytes memory _encodedChainID) {
         for (uint256 idx = 0; idx < validators.length; ++idx) {
             ValidatorWithPower memory validator = validators[idx];
             require(
-                validatorPowers[validator.addr] == 0,
+                validatorPowers.set(validator.addr, validator.power),
                 "DUPLICATION_IN_INITIAL_VALIDATOR_SET"
             );
-            validatorPowers[validator.addr] = validator.power;
             totalValidatorPower += validator.power;
         }
+        encodedChainID = _encodedChainID;
+    }
+
+    /// Get number of validators.
+    function getNumberOfValidators() public view returns(uint256) {
+        return validatorPowers.length();
+    }
+
+    /// Get validators by specifying an offset index and a chunk's size.
+    /// @param offset An offset index of validators mapping.
+    /// @param size The size of the validators chunk.
+    function getValidators(uint256 offset, uint256 size) public view returns(ValidatorWithPower[] memory) {
+        ValidatorWithPower[] memory validatorWithPowerList;
+        uint256 numberOfValidators = getNumberOfValidators();
+
+        if (offset >= numberOfValidators) {
+            // return an empty list
+            return validatorWithPowerList;
+        } else if (offset + size > numberOfValidators) {
+            // reduce size of the entire list
+            size = numberOfValidators - offset;
+        }
+
+        validatorWithPowerList = new ValidatorWithPower[](size);
+        for (uint256 idx = 0; idx < size; ++idx) {
+            (address addr, uint256 power) = validatorPowers.at(idx + offset);
+            validatorWithPowerList[idx] = ValidatorWithPower({addr: addr, power: power});
+        }
+        return validatorWithPowerList;
+    }
+
+    /// Get all validators with power.
+    function getAllValidatorPowers() external view returns(ValidatorWithPower[] memory) {
+        return getValidators(0, getNumberOfValidators());
+    }
+
+    /// Get validator by address
+    /// @param addr is an address of the specific validator.
+    function getValidatorPower(address addr) public view returns(uint256 power) {
+        (, power) = validatorPowers.tryGet(addr);
     }
 
     /// Update validator powers by owner.
     /// @param validators The changed set of BandChain validators.
-    function updateValidatorPowers(ValidatorWithPower[] calldata validators)
+    /// @param expectedTotalPower The value that the totalValidatorPower should be after updating.
+    function updateValidatorPowers(ValidatorWithPower[] calldata validators, uint256 expectedTotalPower)
         external
         onlyOwner
     {
+        uint256 _totalValidatorPower = totalValidatorPower;
         for (uint256 idx = 0; idx < validators.length; ++idx) {
             ValidatorWithPower memory validator = validators[idx];
-            totalValidatorPower -= validatorPowers[validator.addr];
-            validatorPowers[validator.addr] = validator.power;
-            totalValidatorPower += validator.power;
+            (bool found, uint256 oldPower) = validatorPowers.tryGet(validator.addr);
+            if (found) {
+                _totalValidatorPower -= oldPower;
+            }
+
+            if (validator.power > 0) {
+                validatorPowers.set(validator.addr, validator.power);
+                _totalValidatorPower += validator.power;
+            } else {
+                validatorPowers.remove(validator.addr);
+            }
         }
+
+        require(_totalValidatorPower == expectedTotalPower, "TOTAL_POWER_CHECKING_FAIL");
+        totalValidatorPower = _totalValidatorPower;
     }
 
     /// Relays a detail of Bandchain block to the bridge contract.
@@ -1614,6 +2510,7 @@ contract Bridge is IBridge, Ownable {
     function relayBlock(
         MultiStore.Data calldata multiStore,
         BlockHeaderMerkleParts.Data calldata merkleParts,
+        CommonEncodedVotePart.Data calldata commonEncodedVotePart,
         TMSignature.Data[] calldata signatures
     ) public {
         if (
@@ -1624,13 +2521,21 @@ contract Bridge is IBridge, Ownable {
 
         // Computes Tendermint's block header hash at this given block.
         bytes32 blockHeader = merkleParts.getBlockHeader(multiStore.getAppHash());
+        // Verify the prefix, suffix and then compute the common encoded part.
+        bytes memory commonEncodedPart = commonEncodedVotePart.checkPartsAndEncodedCommonParts(blockHeader);
+        // Create a local variable to prevent reading that state repeatedly.
+        bytes memory _encodedChainID = encodedChainID;
+
         // Counts the total number of valid signatures signed by active validators.
         address lastSigner = address(0);
         uint256 sumVotingPower = 0;
         for (uint256 idx = 0; idx < signatures.length; ++idx) {
-            address signer = signatures[idx].recoverSigner(blockHeader);
+            address signer = signatures[idx].checkTimeAndRecoverSigner(commonEncodedPart, _encodedChainID);
             require(signer > lastSigner, "INVALID_SIGNATURE_SIGNER_ORDER");
-            sumVotingPower += validatorPowers[signer];
+            (bool success, uint256 power) = validatorPowers.tryGet(signer);
+            if (success) {
+                sumVotingPower += power;
+            }
             lastSigner = signer;
         }
         // Verifies that sufficient validators signed the block and saves the oracle state.
@@ -1812,7 +2717,7 @@ contract Bridge is IBridge, Ownable {
         bytes memory key,
         bytes32 dataHash,
         IAVLMerklePath.Data[] memory merklePaths
-    ) internal pure returns (bool) {
+    ) private pure returns (bool) {
         bytes memory encodedVersion = Utils.encodeVarintSigned(version);
 
         bytes32 currentMerkleHash = sha256(
