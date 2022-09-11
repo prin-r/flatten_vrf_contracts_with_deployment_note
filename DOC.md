@@ -22,7 +22,17 @@ Bandchain Verifiable Randomness extends the general form of the VRF system to se
 
 We chose the VRF of this [paper](https://eprint.iacr.org/2017/099), which has already been adopted in various other protocols. The construction is based on a well-studied cryptographic hardness assumption over prime-order elliptic curve groups. For our instantiation, we chose the widely-used Ed25519 curve that achieves very good performance and has a transparent choice of parameters, as well as the Elligator, for our hash-to-curve installation. Our implementation is fully compliant with the [VRF draft standard](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vrf-09). Moreover, we implemented all the necessary techniques to achieve full security. For completeness, we include the pseudo-code description of our VRF below.
 
-![figure2](https://user-images.githubusercontent.com/12705423/189547735-895f4cd1-ad5b-4c29-b84a-1cb6fa5f0c23.png)
+![figure1](https://user-images.githubusercontent.com/12705423/189547735-895f4cd1-ad5b-4c29-b84a-1cb6fa5f0c23.png)
+
+##### Protocol Flow
+
+![figure2](https://user-images.githubusercontent.com/12705423/161716790-8696406a-af8d-422b-8ff4-5092cae4d0e1.png)
+
+At a high level, our protocol works as follows. First, two contracts are deployed on the main chain (Ethereum or other EVMs), VRF contract and Bridge. The first is in charge of receiving randomness requests from dApps and contains code that pre-processes the request to be ready for submission to the Band side-chain. It also works as the receiving end of the request’s result. The second, as the name denotes, works as the connecting “bridge” between the two chains to validate the latest state of the side chain and verify that the received results for VRF requests are indeed the ones computed and stored on BandChain. 
+A third-party dApp that wishes to request a random value submits its request to the VRF contract, which will then prepare the actual VRF input by expanding it into a VRF seed. This is then picked up by incentivized actors and/or the Band foundation and is submitted as a VRF request to BandChain. In particular, a VRF oracle Script collects this request and then maps it to the set of VRF data sources available to the chain, as well as a number of BandChain validators. Then the oracle script randomly assigns it to a VRF provider corresponding to one of the VRF data sources. The assigned provider evaluates the VRF on the prescribed input using its VRF secret key and then broadcasts the result to the Band network. Next, all chosen validators run the VRF verification algorithm using this provider’s public key and, if verification succeeds, transmit the result to the VRF oracle script. Finally, after collecting the necessary number of results from the validators, the oracle script accepts the majority as the final result, which becomes part of the BandChain state. After that, the final result will get included in the next block’s computation.
+The final result is transmitted back to the main chain’s VRF contract with a Merkle tree proof for its inclusion on the BandChain’s state. This proof is then verified with the Bridge contract. After successful checking, the final result is finally returned to the original dApp.
+
+
 
 
 
