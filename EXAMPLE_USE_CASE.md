@@ -170,9 +170,7 @@ contract SimpleLottery is IVRFConsumer {
 }
 ```
 
-We have deployed the reference contracts to the Goerli testnet here.
-
-[Goerli](https://goerli.etherscan.io)    
+We have deployed the reference contracts to the [Goerli](https://goerli.etherscan.io) testnet here.  
 
 |Contract         |Address                                                                                                                    |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------|
