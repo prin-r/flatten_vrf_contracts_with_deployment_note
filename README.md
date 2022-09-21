@@ -23,9 +23,9 @@
 
 ##### Chains \ Deployment Fees
 
-|Chains \ Deployment Fees                            |Bridge|VRFProvider|VRFComsumer|VRFLens|
-|----------------------------------------------------|------|----------|-------|-|
-|[Goerli](https://goerli.etherscan.io)               |1|2|3|4|
+|Chains \ Deployment Fees                            |Bridge|VRFProvider|VRFComsumer|VRFLens| Total|
+|----------------------------------------------------|------|----------|------------|-------|------|
+|[Goerli](https://goerli.etherscan.io)               |0.01269203|0.00534256 |0.00124479|0.00175182| 0.0210312|
 |[Cronos](https://testnet.cronoscan.com)             |1|2|3|4|
 |[OKC](https://www.oklink.com/en/okc-test)           |1|2|3|4|
 |[Oasis](https://testnet.explorer.emerald.oasis.dev) |1|2|3|4|
