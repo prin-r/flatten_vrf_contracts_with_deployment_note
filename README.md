@@ -31,7 +31,7 @@
 |[Oasis](https://testnet.explorer.emerald.oasis.dev) |0.5024284(5024284)|0.2109113(2109113)|0.0494199(494199)|0.069344(693440)|0.8321036(8321036)|
 |[BSC](https://testnet.bscscan.com)                  |0.04947372(4947372)|0.02091973(2091973)|0.00489687(
 489687)|0.00686737(686737)|8215769(0.08215769)|
-|[OP Goerli](https://goerli-optimism.etherscan.io)   |1()|2()|3()|4()|5()|
+|[OP Goerli](https://goerli-optimism.etherscan.io)   |5005372 + 268846 (l1+l2)|2098073 + 157990 (l1+l2)|490987 + 36282 (l1+l2)|689337 + 50346 (l1+l2)|8283769 + 513464 (l1+l2)|
 |[Polygon](https://mumbai.polygonscan.com)           |1()|2()|3()|4()|5()|
 |[Avalanche](https://testnet.snowtrace.io)           |1()|2()|3()|4()|5()|
 
