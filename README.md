@@ -28,11 +28,11 @@
 |[Goerli](https://goerli.etherscan.io)               |0.01269203(5005372)|0.00534256(2098073)|0.00124479(490987)|0.00175182(689337)|0.0210312(8283769)|
 |[Cronos](https://testnet.cronoscan.com)             |9.842420667278(5015572)|4.113470662362(2096173)|0.965068065368(491787)|1.354661490476(690937)|16.275620885484(8294469)|
 |[OKC](https://www.oklink.com/en/okc-test)           |0.0006673942(6673942)|0.0002056094(2056094)|0.0000489687(489687)|0.0000686737(686737)|0.000990646(9906460)|
-|[Oasis](https://testnet.explorer.emerald.oasis.dev) |1|2|3|4|
-|[BSC](https://testnet.bscscan.com)                  |1|2|3|4|
-|[OP Goerli](https://goerli-optimism.etherscan.io)   |1|2|3|4|
-|[Polygon](https://mumbai.polygonscan.com)           |1|2|3|4|
-|[Avalanche](https://testnet.snowtrace.io)           |1|2|3|4|
+|[Oasis](https://testnet.explorer.emerald.oasis.dev) |0.5024284(5024284)|0.2109113(2109113)|0.0494199(494199)|0.069344(693440)|0.8321036(8321036)|
+|[BSC](https://testnet.bscscan.com)                  |1()|2()|3()|4()|5()|
+|[OP Goerli](https://goerli-optimism.etherscan.io)   |1()|2()|3()|4()|5()|
+|[Polygon](https://mumbai.polygonscan.com)           |1()|2()|3()|4()|5()|
+|[Avalanche](https://testnet.snowtrace.io)           |1()|2()|3()|4()|5()|
 
 
 #### Mainnet
