@@ -170,12 +170,12 @@ contract SimpleLottery is IVRFConsumer {
 }
 ```
 
-We have deployed the reference contracts to the [Goerli](https://goerli.etherscan.io) testnet here.  
+We have deployed the reference contracts to the [Goerli](https://goerli.etherscan.io) testnet here. 
 
-|Contract         |Address                                                                                                                    |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------|
-|Bridge           |[0x6f057CE91CFcB59d839Db91e8DF067278a704cb8](https://goerli.etherscan.ioaddress/0x6f057CE91CFcB59d839Db91e8DF067278a704cb8)| 
-|VRFProvider      |[0xF1F3554b6f46D8f172c89836FBeD1ea8551eabad](https://goerli.etherscan.ioaddress/0xF1F3554b6f46D8f172c89836FBeD1ea8551eabad)| 
-|MockVRFConsumer  |[0x6aFCBD05f4718B994a290cfF03547DDFFcd74E08](https://goerli.etherscan.ioaddress/0x6aFCBD05f4718B994a290cfF03547DDFFcd74E08)| 
-|VRFLens          |[0x6e876b4Ed458af275Eb049a3f89BF0909618d154](https://goerli.etherscan.ioaddress/0x6e876b4Ed458af275Eb049a3f89BF0909618d154)| 
-|SimpleLottery    |[0xCD3528283aA330003E50350134a48d1920BA70A0](https://goerli.etherscan.ioaddress/0xCD3528283aA330003E50350134a48d1920BA70A0)| 
+|Contract         |Address|
+|-----------------|------------------------------------------|
+|Bridge           |[0x6f057CE91CFcB59d839Db91e8DF067278a704cb8](https://goerli.etherscan.io/address/0x6f057CE91CFcB59d839Db91e8DF067278a704cb8)| 
+|VRFProvider      |[0xF1F3554b6f46D8f172c89836FBeD1ea8551eabad](https://goerli.etherscan.io/address/0xF1F3554b6f46D8f172c89836FBeD1ea8551eabad)| 
+|MockVRFConsumer  |[0x6aFCBD05f4718B994a290cfF03547DDFFcd74E08](https://goerli.etherscan.io/address/0x6aFCBD05f4718B994a290cfF03547DDFFcd74E08)| 
+|VRFLens          |[0x6e876b4Ed458af275Eb049a3f89BF0909618d154](https://goerli.etherscan.io/address/0x6e876b4Ed458af275Eb049a3f89BF0909618d154)| 
+|SimpleLottery    |[0xCD3528283aA330003E50350134a48d1920BA70A0](https://goerli.etherscan.io/address/0xCD3528283aA330003E50350134a48d1920BA70A0)| 
