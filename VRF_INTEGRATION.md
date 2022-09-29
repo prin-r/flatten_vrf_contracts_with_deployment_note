@@ -1,18 +1,21 @@
 # VRF integration
 
-This part will discuss integrating your smart contracts with Band's VRF. We will separate this section into two sub-sections: requesting and resolving.
+In this section, we will discuss how to integrate your smart contracts with the Band VRF. This section is separated into two sub-sections: **Requesting** and **Resolving**.
 
-Typically when building on-chain applications that rely on an unpredictable outcome, such as lottery apps or games, the system needs a reliable source of randomness, and that's when Band's VRF comes into play.
+Typically, when building on-chain applications that rely on an unpredictable outcome, such as lottery apps or games, the system requires a reliable source of randomness, and that is when the Band VRF comes into play.
+
+---
+
 
 ### Requesting
 
-![img](https://user-images.githubusercontent.com/12705423/192215486-fcf23603-19df-4c04-ab2f-2fa56fc05c53.jpg)
+![img1](https://user-images.githubusercontent.com/12705423/192215486-fcf23603-19df-4c04-ab2f-2fa56fc05c53.jpg)
 
-According to the VRF workflow, the process for getting new random data is a request and callback model. In order to complete the process, there will be two transactions. The first is the transaction that contains a consumer's request for random data, and the second is the transaction that resolves the request.
+As shown in the VRF workflow, a request and callback model is used to obtain new random data. Two transactions are required in order to complete the process. The first transaction is the transaction that contains a consumer's request for random data, and the second transaction is the transaction that resolves the request.
 
-Let's assume that you are building an on-chain application that uses the VRF as a reliable source of randomness. Your contract or contracts must have a reference to Band's VRF provider to be able to request the VRF provider when there is a need for random data.
+Let us assume that you are building an on-chain application that uses the Band VRF as the reliable source of randomness. Your contract(s) must reference the VRF Provider contract in order to request random data.
 
-First, you need an interface for the VRF provider.
+First, you need an interface for the VRFProvider contract.
 ```solidity=
 interface IVRFProvider {
     /// @dev The function for consumers who want random data.
@@ -22,19 +25,19 @@ interface IVRFProvider {
 }
 ```
 
-Then, the consumer only needs to call "requestRandomData" with a string parameter we call seed.
+Then, the consumer only needs to call `requestRandomData` with a string parameter called `seed`.
 
 **For security reasons, the seed is a generated string on the consumer side.
-One consumer can only use one seed once as the VRF provider has a mapping to track used seeds for each consumer address.**
+Each consumer can use each seed only once because the VRFProvider contract implements a mapping to track used seeds for each consumer address.**
 
 ```solidity=
 // Mapping that enforces the client to provide a unique seed for each request
 mapping(address => mapping(string => bool)) public hasClientSeed;
 ```
 
-For example, let's assume that there are two consumer contracts: A and B. Contract A request the provider with seed AAA, and contract B request the provider with seed BBB. After both requests were successfully made, contract A can't use AAA as seed again, and the same B can't use BBB again. However, A can still use BBB, and the same as B can still use AAA.
+For example, let us assume that there are two consumer contracts: *Contract A* and *Contract B*. *Contract A* requests the VRFProvider contract with the seed `AAA`, and *Contract B* requests the VRFProvider contract with the seed `BBB`. After both requests have been successfully made, *Contract A* can no longer use `AAA` as the seed again. Similarly, *Contract B* can no longer use `BBB` as the seed again. However, *Contract A* can still use `BBB` as the seed, and *Contract B* can still use `AAA` as the seed.
 
-After including the IVRFProvider, the consumer should be able to make a request-call the provider contract as in the example implementation below.
+After including the `IVRFProvider`, the consumer can now make a request-call to the VRFProvider contract, as shown in the example implementation below.
 
 ```solidity=
 contract MockVRFConsumer {
@@ -50,11 +53,11 @@ contract MockVRFConsumer {
 }
 ```
 
-When calling "requestRandomData(seed)", the consumer can specify "msg.value" to incentivize others to resolve the random data request. However, consumers can choose not to provide any incentive and resolve the request themselves.
+When calling `requestRandomData(seed)`, the consumer can specify `msg.value` to incentivize others to resolve the random data request. However, the consumer can choose not to provide any incentive and resolve the request themselves.
 
-After the consumer can make a call to the provider, the consumer still needs to implement the callback function for the provider to be able to call back and do something with the random result.
+Apart from implementing the request function to the VRFProvider contract, the consumer is required to implement a callback function for the VRFProvider contract to call back and do something with the random result.
 
-The example below is an implementation that shows how to implement the callback function. 
+The example below is an implementation that shows how to implement the callback function `consume`. 
 
 ```solidity=
 contract MockVRFConsumer {
@@ -81,9 +84,9 @@ contract MockVRFConsumer {
 }
 ```
 
-As you can see, the consume function needs to have a logic that verifies if the caller is the provider to ensure that no one can call this function except the provider. For other logic in the example, the callback function only saves the callback data from the provider to its state.
+As shown above, the `consume` function implements a logic that verifies whether the caller is the VRFProvider contract or not. This is to ensure that no one can call this function except the VRFProvider contract. With regards to the remaining logic in the example, the callback function only saves the callback data from the VRFProvider contract to its state.
 
-You can see our deployed MockVRFConsumer on each chain in the table below.
+Our deployed `Bridge`, `VRFProvider`, `MockVRFConsumer` and `VRFLens`contracts on each chain are shown in the table below.
 
 #### Testnet
 
@@ -106,11 +109,14 @@ You can see our deployed MockVRFConsumer on each chain in the table below.
 |                 |      |           |           |
 
 
+---
+
+
 ### Resolving
 
-Anyone can resolve every non-resolved request in the provider contract by tracking the mapping called "tasks" in the provider contract.
+Anyone can resolve any unresolved requests in the VRFProvider contract by tracking the mapping called `tasks` in the VRFProvider contract.
 
-The code below is a simplified version of the VRFProvider that shows what "tasks" looks like.
+The code below is a simplified version of the VRFProvider contract that shows what `tasks` looks like.
 
 ```solidity=
 contract VRFProvider {
@@ -134,4 +140,44 @@ contract VRFProvider {
 }
 ```
 
-When the resolver(worker, bounty hunter, or whatever you want to call) finds a non-resolved request, they can resolve it by making a request transaction on Bandchain for VRF randomness. After the random result is finalized on Bandchain, the resolver can copy the proof of availability for the result and then relay it via a "relayProof" function on the VRFProvider. The resolver also needs to specify a nonce of the task they want to resolve.
+When the resolver (this can be a self-implemented worker bot or a bounty hunter) finds an unresolved request, the resolver can resolve it by making a request transaction on the BandChain for the VRF randomness. After the random result is finalized on the BandChain, the resolver can retrieve the proof of inclusion of the result, and then relay the proof via a `relayProof` function on the VRFProvider contract. The resolver also needs to specify the nonce of the task that it wants to resolve.
+
+#### Manually request and resolve
+
+This section will demonstrate how to request random data from the VRF provider and then resolve the request manually using [Goerli](https://goerli.etherscan.io/) and [Laozi-Testnet5](https://laozi-testnet5.cosmoscan.io/) UI.
+
+Firstly, go to the [VRF provider contract on Goerli](https://goerli.etherscan.io/address/0xF1F3554b6f46D8f172c89836FBeD1ea8551eabad#readContract) to view some of its configuration.
+
+![img2](https://user-images.githubusercontent.com/12705423/193009074-542be3ea-8b6f-4f12-b96f-1b153afdd2a8.png)
+
+The image above shows three parameters for requesting data on Bandchain: `oskCount`, `minCount`, and `oracleScriptID`.
+
+Let's move to the `Write Contract` tab to begin requesting data on the Ethereum side.
+
+[![video1](https://i9.ytimg.com/vi/3ki0LhArdoI/mq2.jpg?sqp=CISJ15kG&rs=AOn4CLDxoB24651sejcUvK84IQry9TsO5g)](https://youtu.be/3ki0LhArdoI)
+
+The video above shows that anyone can request Band VRF randomness by calling `requestRandomData` on the VRF provider contract. After the calling is successful, the VRF provider will log some parameters that will be used to make a request on the Bandchain side.
+
+<i>See the request transaction [here](https://goerli.etherscan.io/tx/0x640425325d7fa5f7b56a9d966f75863a40e8a1139ddf5a77b55a66dd8d03ba46#eventlog)</i>
+
+![img_task_1](https://user-images.githubusercontent.com/12705423/193093565-bc89e14b-b357-4dda-88f8-788b56c5eff0.png)
+
+The image above shows the current stage of the task/request that we just **created**.
+
+The next step is making a request on Bandchain using those parameters from the previous steps. 
+
+[![video1](https://i9.ytimg.com/vi/oxbLmLv_fgQ/mq1.jpg?sqp=COCU15kG&rs=AOn4CLAHohDR_wa6ZcaOZ8BhgevUox85dw)](https://youtu.be/oxbLmLv_fgQ)
+
+In this case, we will go to [oracleScriptID 152 or O152](https://laozi-testnet5.cosmoscan.io/oracle-script/152#execute) and then fill in the `seed`, `time`, `workerAddress`, `minCount`, and `askCount`, as shown in the video above.
+
+<i>The worker address can be any EOA address that the resolver will use for relaying to resolve the request on the Ethereum side.</i>
+
+The next step is to copy the Merkle proof and then switch back to the Ethereum side to relay the proof on the VRF provider contract.
+
+[![video1](https://i9.ytimg.com/vi/uFDPKyerWLY/mq3.jpg?sqp=COSb15kG&rs=AOn4CLA6_6aLgcAk6et6-XR2-rIDk48rAg)](https://youtu.be/uFDPKyerWLY)
+
+<i>See the relay transaction [here](https://goerli.etherscan.io/tx/0x5e7d85d4d2cd41b71f3ea35fff2a17dba8d19c085678d6f8dd7e22ca664da9b8#eventlog)</i>
+
+![img_task_2](https://user-images.githubusercontent.com/12705423/193094318-67cee15a-220d-4122-b7bb-79f64158a0c9.png)
+
+The image above shows the current stage of the task/request that we just **resolved**.
